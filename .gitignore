@@ -1,0 +1,7 @@
+work-obj*.cf
+*.ghw
+*.vcd
+*.wlf
+transcript
+/sim/ghdl/work/
+/sim/work/
