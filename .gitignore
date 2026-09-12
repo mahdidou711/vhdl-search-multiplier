@@ -18,3 +18,10 @@ fpga/de1/*/*.summary
 fpga/de1/*/*.smsg
 fpga/de1/*/*.jdi
 fpga/de1/*/*.done
+fpga/de1/*/*.qsf.bak
+fpga/de1/*/*.qdf
+fpga/de1/*/simulation/
+fpga/de1/*/greybox_tmp/
+fpga/de1/*/hc_output/
+fpga/de1/*/PLLJ_PLLSPE_INFO.txt
+fpga/de1/*/*.qar
