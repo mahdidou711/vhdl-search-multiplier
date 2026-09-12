@@ -29,4 +29,12 @@ ghdl -r --std=93 tb_searchx --assert-level=error
 echo "Running tb_mult_shift_add"
 ghdl -r --std=93 tb_mult_shift_add --assert-level=error
 
+# Source-level analysis of the DE1 FPGA wrappers (syntax, entity/port
+# matching, RTL dependencies). No simulation: these are board glue only.
+echo "Analyzing FPGA wrapper: search_de1_top"
+ghdl -a --std=93 "$REPO_ROOT/fpga/de1/search/search_de1_top.vhd"
+
+echo "Analyzing FPGA wrapper: multiplier_de1_top"
+ghdl -a --std=93 "$REPO_ROOT/fpga/de1/multiplier/multiplier_de1_top.vhd"
+
 echo "All GHDL tests passed"

@@ -5,3 +5,16 @@ work-obj*.cf
 transcript
 /sim/ghdl/work/
 /sim/work/
+
+# Regenerated Quartus project outputs (fpga/de1/multiplier, fpga/de1/search)
+fpga/de1/*/db/
+fpga/de1/*/incremental_db/
+fpga/de1/*/output_files/
+fpga/de1/*/*.qws
+fpga/de1/*/*.sof
+fpga/de1/*/*.pof
+fpga/de1/*/*.rpt
+fpga/de1/*/*.summary
+fpga/de1/*/*.smsg
+fpga/de1/*/*.jdi
+fpga/de1/*/*.done
