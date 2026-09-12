@@ -30,6 +30,9 @@ architecture A1 of searchx is
     -- Indice de parcours du tableau
     signal i_reg : integer range 0 to 15 := 0;
 
+    -- Valeur recherchee, capturee au lancement de la transaction
+    signal X_reg : std_logic_vector(7 downto 0) := (others => '0');
+
     -- Registres internes pour les sorties
     signal index_reg     : std_logic_vector(3 downto 0) := (others => '0');
     signal fini_reg      : std_logic := '0';
@@ -49,6 +52,7 @@ begin
         if reset = '0' then
             etat          <= IDLE;
             i_reg         <= 0;
+            X_reg         <= (others => '0');
             index_reg     <= (others => '0');
             fini_reg      <= '0';
             non_exist_reg <= '0';
@@ -65,12 +69,13 @@ begin
 
                     if debut = '1' then
                         i_reg <= 0;
+                        X_reg <= Xinput;
                         etat  <= SEARCH;
                     end if;
 
                 when SEARCH =>
-                    -- Comparaison sequentielle : TAB(i_reg) avec Xinput
-                    if TAB(i_reg) = Xinput then
+                    -- Comparaison sequentielle avec la valeur capturee
+                    if TAB(i_reg) = X_reg then
                         index_reg     <= std_logic_vector(to_unsigned(i_reg, 4));
                         fini_reg      <= '1';
                         non_exist_reg <= '0';

@@ -217,37 +217,54 @@ begin
         run_search(x"59", 4, '0', 5);
 
         -----------------------------------------------------------------------
-        -- TEST DE CARACTERISATION: Xinput remains live throughout SEARCH.
-        -- Start by looking for F4, let indices 0, 1 and 2 be compared, then
-        -- change Xinput to 8C at the still-unvisited index 7. This distinguishes
-        -- the baseline from implementations sampling Xinput either on debut or
-        -- on the first SEARCH edge.
+        -- TEST DE CONFORMITE: Xinput must be captured EXACTLY on the rising
+        -- edge where state = IDLE and debut = '1' (the acceptance edge), not
+        -- kept live during SEARCH and not captured one cycle late on the
+        -- first SEARCH edge.
+        --
+        -- Chronology:
+        --   1. Xinput <= A (F4).
+        --   2. debut  <= '1'.
+        --   3. tick() lands exactly on the acceptance edge (state=IDLE,
+        --      debut='1' sampled there); X_reg must capture F4 on this edge.
+        --   4. Immediately after that edge (1 ns later, inside the same
+        --      10 ns clock period) but strictly before the first SEARCH
+        --      rising edge, Xinput is changed to B (8C).
+        --   5. The transaction continues for 15 comparison cycles.
+        --   6/7. A DUT that still reads Xinput live during SEARCH, or that
+        --      captures Xinput one cycle late (on the first SEARCH edge,
+        --      by which time Xinput already reads 8C), would match B at
+        --      TAB(7)=8C and assert fini after only 8 comparisons: this is
+        --      caught by the fini='0' assertions below for comparisons 1..14.
+        --   8. A correct DUT ignores the post-acceptance change and completes
+        --      with A at index 14, non_exist='0'.
         -----------------------------------------------------------------------
-        Xinput <= x"F4";
+        Xinput <= x"F4";                -- A
         debut  <= '1';
-        tick;                           -- Accept request for F4.
+        tick;                           -- Acceptance edge: state=IDLE, debut='1'.
+                                         -- X_reg must capture F4 here.
         debut  <= '0';
-        for comparison in 0 to 2 loop
-            tick;                       -- Compare indices 0, 1 and 2 for F4.
-            assert fini = '0'
-                report "live-Xinput setup completed unexpectedly" severity error;
-        end loop;
+        Xinput <= x"8C";                -- B: applied after the acceptance edge,
+                                         -- before the first SEARCH rising edge.
+        assert fini = '0'
+            report "capture-timing setup completed unexpectedly" severity error;
+        check_index(0, "capture-timing acceptance edge");
 
-        Xinput <= x"8C";               -- Future index 7, after three compares.
-        for comparison in 3 to 7 loop
-            tick;
-            if comparison < 7 then
+        for comparison in 1 to 15 loop
+            tick;                       -- SEARCH comparisons for the captured A.
+            if comparison < 15 then
                 assert fini = '0'
-                    report "live-Xinput search completed too early" severity error;
+                    report "capture-timing search completed too early " &
+                           "(likely matched B=8C instead of retaining A=F4)"
+                    severity error;
             else
                 assert fini = '1' and non_exist = '0'
-                    report "searchx did not observe the later Xinput change"
-                    severity error;
-                check_index(7, "live Xinput during SEARCH");
+                    report "capture-timing search did not retain A" severity error;
+                check_index(14, "capture-timing completed search");
             end if;
         end loop;
         tick;
-        check_done_release(7, "after live-Xinput characterization");
+        check_done_release(14, "after capture-timing test");
 
         assert false report "tb_searchx: reset PASS" severity note;
         assert false report "tb_searchx: 16 ROM positions PASS" severity note;
@@ -255,7 +272,7 @@ begin
         assert false report "tb_searchx: latency PASS" severity note;
         assert false report "tb_searchx: relaunch/debut protocol PASS" severity note;
         assert false report "tb_searchx: reset during search PASS" severity note;
-        assert false report "tb_searchx: live Xinput characterization PASS"
+        assert false report "tb_searchx: Xinput capture-timing contract PASS"
             severity note;
         assert false report "tb_searchx PASS" severity note;
 
