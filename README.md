@@ -12,6 +12,8 @@ Both designs originated from university FPGA coursework and were later
 cleaned up, given deterministic-latency testbenches, and packaged here as a
 small, reproducible portfolio project.
 
+The `mult_shift_add` core (`rtl/mult_shift_add.vhd`) was originally written by Omar, a fellow student on the assignment, and is published here with his permission. The `searchx` core and the verification, FPGA integration, CI, and documentation added for this repository are Mehdi Bouama's work.
+
 ## Shared architectural theme
 
 - Simple FSM-controlled sequential processing (`IDLE` / working state /
