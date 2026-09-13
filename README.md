@@ -226,6 +226,12 @@ GHDL does not read or validate `.qsf`/`.qpf` files; the checks in this
 second group were done by direct inspection of the project files, not by
 any tool run.
 
+**GitHub Actions CI:**
+
+- GitHub Actions CI has been executed successfully on the public repository.
+  The workflow runs the same GHDL verification suite on every push and pull
+  request targeting `main`.
+
 **Not executed:**
 
 - Quartus Analysis & Synthesis.
@@ -233,10 +239,6 @@ any tool run.
 - Quartus Assembler / `.sof` generation.
 - TimeQuest timing closure / actual Fmax.
 - Physical DE1 board test.
-- Real execution of the GitHub Actions workflow: it is configured and
-  statically reviewed (see [`.github/workflows/ghdl.yml`](.github/workflows/ghdl.yml)),
-  but has not yet run, since this repository has not yet been pushed. Its
-  first real execution will happen after publication.
 
 The `.sdc` files declare a 20 ns (50 MHz) clock constraint for TimeQuest,
 but this has not been evaluated by TimeQuest in this environment. Until a
