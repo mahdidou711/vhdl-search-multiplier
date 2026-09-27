@@ -1,10 +1,10 @@
 # Sequential VHDL Search and Iterative Multiplier
 
-> **Quick overview** — VHDL · sequential FSM design · iterative arithmetic · cycle-exact GHDL verification · **65,536** multiplier combinations · GitHub Actions CI · Terasic DE1 integration preparation
+> **Quick overview** — VHDL · sequential FSM design · iterative arithmetic · cycle-exact GHDL verification · **65,536** multiplier combinations · GitHub Actions CI · Terasic DE1 hardware implementation
 
 Two small, self-contained VHDL sequential designs, each verified with an
-exhaustive or near-exhaustive GHDL testbench and prepared for Terasic DE1
-(Cyclone II) FPGA integration:
+exhaustive or near-exhaustive GHDL testbench and implemented on a Terasic DE1
+(Cyclone II) FPGA:
 
 1. **`searchx`** (a sequential search engine over a fixed 16 × 8-bit table).
 2. **`mult_shift_add`** (an unsigned 8 × 8 iterative shift-add multiplier
@@ -14,7 +14,7 @@ Both designs originated from university FPGA coursework and were later
 cleaned up, given deterministic-latency testbenches, and packaged here as a
 small, reproducible portfolio project.
 
-The `mult_shift_add` core (`rtl/mult_shift_add.vhd`) was originally written by Omar, a fellow student on the assignment, and is published here with his permission. The `searchx` core and the verification, FPGA integration preparation, CI, and documentation added for this repository are Mehdi Bouama's work.
+The `mult_shift_add` core (`rtl/mult_shift_add.vhd`) was originally written by Omar, a fellow student on the assignment, and is published here with his permission. The `searchx` core and the verification, FPGA integration, CI, and documentation added for this repository are Mehdi Bouama's work.
 
 ## Shared architectural theme
 
@@ -158,7 +158,7 @@ In addition to the two testbenches above, `run_tests.sh` also:
 
 ---
 
-## FPGA integration preparation / Terasic DE1
+## FPGA implementation / Terasic DE1
 
 - **Target board:** Terasic DE1
 - **FPGA:** Altera/Intel Cyclone II, `EP2C20F484C7`
@@ -234,18 +234,15 @@ any tool run.
   The workflow runs the same GHDL verification suite on every push and pull
   request targeting `main`.
 
-**Not executed:**
+**Hardware validation:**
 
-- Quartus Analysis & Synthesis.
-- Quartus Fitter (place-and-route).
-- Quartus Assembler / `.sof` generation.
-- TimeQuest timing closure / actual Fmax.
-- Physical DE1 board test.
+- Both designs were implemented and programmed on a physical Terasic DE1 board.
+- Functional behavior was tested using the board switches, LEDs, and seven-segment displays.
+- The current repository does not claim a verified maximum clock frequency and does not include a current TimeQuest timing-closure report.
 
-The `.sdc` files declare a 20 ns (50 MHz) clock constraint for TimeQuest,
-but this has not been evaluated by TimeQuest in this environment. Until a
-Quartus compile is run, treat the FPGA side as *source-validated, not
-timing-validated or hardware-tested*.
+The `.sdc` files declare a 20 ns (50 MHz) clock constraint for TimeQuest.
+The hardware implementation is validated functionally; no timing-margin or
+Fmax claim is made here.
 
 ---
 
@@ -268,10 +265,9 @@ A GitHub Actions workflow ([`.github/workflows/ghdl.yml`](.github/workflows/ghdl
 runs the same script on every push and pull request targeting `main`.
 
 For FPGA implementation, each `.qpf` in `fpga/de1/` can be opened with a
-Quartus release supporting the Cyclone II family (the historical project
-this repository descends from used Quartus II 13.0 / 13.0 SP1-era
-tooling). This repository has not been recompiled with Quartus in the
-current environment; see [Validation status](#validation-status).
+Quartus release supporting the Cyclone II family. The designs were implemented
+and tested on a Terasic DE1 during project development; the automated checks in
+this repository complement that hardware validation.
 
 ---
 
@@ -296,8 +292,7 @@ This project intentionally stays small:
 - no bus protocol (AXI/Wishbone/ready-valid) around either core;
 - no pipelining: one transaction completes before the next is accepted;
 - no debounce or synchronizer logic on the DE1 wrappers (switches are
-  assumed manually operated and stable, as is standard for this class of
-  educational board demo).
+  assumed manually operated and stable for the board interface).
 
 These are deliberate scope choices for a small, readable reference design,
 not omissions.
