@@ -1,8 +1,10 @@
 # Sequential VHDL Search and Iterative Multiplier
 
+> **Quick overview** — VHDL · sequential FSM design · iterative arithmetic · cycle-exact GHDL verification · **65,536** multiplier combinations · GitHub Actions CI · Terasic DE1 integration preparation
+
 Two small, self-contained VHDL sequential designs, each verified with an
-exhaustive or near-exhaustive GHDL testbench and packaged as a minimal
-Terasic DE1 (Cyclone II) FPGA demo:
+exhaustive or near-exhaustive GHDL testbench and prepared for Terasic DE1
+(Cyclone II) FPGA integration:
 
 1. **`searchx`** (a sequential search engine over a fixed 16 × 8-bit table).
 2. **`mult_shift_add`** (an unsigned 8 × 8 iterative shift-add multiplier
@@ -12,7 +14,7 @@ Both designs originated from university FPGA coursework and were later
 cleaned up, given deterministic-latency testbenches, and packaged here as a
 small, reproducible portfolio project.
 
-The `mult_shift_add` core (`rtl/mult_shift_add.vhd`) was originally written by Omar, a fellow student on the assignment, and is published here with his permission. The `searchx` core and the verification, FPGA integration, CI, and documentation added for this repository are Mehdi Bouama's work.
+The `mult_shift_add` core (`rtl/mult_shift_add.vhd`) was originally written by Omar, a fellow student on the assignment, and is published here with his permission. The `searchx` core and the verification, FPGA integration preparation, CI, and documentation added for this repository are Mehdi Bouama's work.
 
 ## Shared architectural theme
 
@@ -156,7 +158,7 @@ In addition to the two testbenches above, `run_tests.sh` also:
 
 ---
 
-## FPGA / Terasic DE1
+## FPGA integration preparation / Terasic DE1
 
 - **Target board:** Terasic DE1
 - **FPGA:** Altera/Intel Cyclone II, `EP2C20F484C7`
