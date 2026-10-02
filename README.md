@@ -1,10 +1,10 @@
 # Sequential VHDL Search and Iterative Multiplier
 
-> **Quick overview** — VHDL · sequential FSM design · iterative arithmetic · cycle-exact GHDL verification · **65,536** multiplier combinations · GitHub Actions CI · Terasic DE1 hardware implementation
+> **Quick overview** — VHDL · sequential FSM design · iterative arithmetic · cycle-exact GHDL verification · **65,536** multiplier combinations · GitHub Actions CI · Terasic DE1 preparation
 
 Two small, self-contained VHDL sequential designs, each verified with an
-exhaustive or near-exhaustive GHDL testbench and implemented on a Terasic DE1
-(Cyclone II) FPGA:
+exhaustive or near-exhaustive GHDL testbench and prepared for a Terasic DE1
+(Cyclone II) FPGA port:
 
 1. **`searchx`** (a sequential search engine over a fixed 16 × 8-bit table).
 2. **`mult_shift_add`** (an unsigned 8 × 8 iterative shift-add multiplier
@@ -158,7 +158,7 @@ In addition to the two testbenches above, `run_tests.sh` also:
 
 ---
 
-## FPGA implementation / Terasic DE1
+## FPGA integration & DE1 preparation
 
 - **Target board:** Terasic DE1
 - **FPGA:** Altera/Intel Cyclone II, `EP2C20F484C7`
@@ -234,15 +234,11 @@ any tool run.
   The workflow runs the same GHDL verification suite on every push and pull
   request targeting `main`.
 
-**Hardware validation:**
+**Hardware status & coursework experience:**
 
-- Both designs were implemented and programmed on a physical Terasic DE1 board.
-- Functional behavior was tested using the board switches, LEDs, and seven-segment displays.
-- The current repository does not claim a verified maximum clock frequency and does not include a current TimeQuest timing-closure report.
-
-The `.sdc` files declare a 20 ns (50 MHz) clock constraint for TimeQuest.
-The hardware implementation is validated functionally; no timing-margin or
-Fmax claim is made here.
+- **Multiplier (`mult_shift_add`):** the core ran on a physical Terasic DE1 during coursework (Quartus Analysis & Synthesis and Fitter completed, programming files generated, photo evidence 13 x 11 = 143). That historical core is byte-identical to the pinned core, but the historical wrapper differs from the current public wrapper, which is not board-tested.
+- **Search (`searchx`):** a historical version was tested on a physical DE1 during coursework; that version predates the current `X_reg` input-capture fix, so the current search version is not independently board-tested.
+- For the current public wrappers, no timing closure, verified maximum clock frequency (Fmax), or physical board validation is claimed.
 
 ---
 
@@ -265,9 +261,9 @@ A GitHub Actions workflow ([`.github/workflows/ghdl.yml`](.github/workflows/ghdl
 runs the same script on every push and pull request targeting `main`.
 
 For FPGA implementation, each `.qpf` in `fpga/de1/` can be opened with a
-Quartus release supporting the Cyclone II family. The designs were implemented
-and tested on a Terasic DE1 during project development; the automated checks in
-this repository complement that hardware validation.
+Quartus release supporting the Cyclone II family. Historical coursework cores
+ran on a Terasic DE1 as documented above, while the current public wrappers
+are prepared for Quartus and statically reviewed.
 
 ---
 
