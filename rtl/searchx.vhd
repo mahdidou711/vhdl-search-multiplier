@@ -21,7 +21,7 @@ architecture A1 of searchx is
         x"9D", x"AE", x"BF", x"C1",
         x"D2", x"E3", x"F4", x"55"
     );
-    -- x"22" est present pour que ton script commandes.do puisse le trouver
+    -- La valeur x"22" fait partie des 16 entrees de la table.
 
     -- Automate
     type etat_t is (IDLE, SEARCH, DONE);
@@ -48,7 +48,7 @@ begin
     process (clk, reset)
     begin
 
-        -- Reset actif à 0 (compatible avec ton commandes.do)
+        -- Reinitialisation asynchrone de la FSM et des registres lorsque reset = '0'.
         if reset = '0' then
             etat          <= IDLE;
             i_reg         <= 0;

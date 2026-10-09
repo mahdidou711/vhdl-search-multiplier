@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity mult_shift_add is
     port(
         clk   : in  std_logic;
-        reset : in  std_logic; -- reset actif à 0 (comme ton TP précédent, si tu veux garder la même logique)
+        reset : in  std_logic; -- Reset asynchrone actif a '0'.
         start : in  std_logic;
         A_in  : in  std_logic_vector(7 downto 0);
         B_in  : in  std_logic_vector(7 downto 0);
